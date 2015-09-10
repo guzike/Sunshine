@@ -73,7 +73,7 @@ public class ForecastFragment extends Fragment {
 
             try {
                 // Construct the URL for the OpenWeatherMap query
-                // Possible parameters are avaiable at OWM's forecast API page, at
+                // Possible parameters are available at OWM's forecast API page, at
                 // http://openweathermap.org/API#forecast
                 URL url = new URL("http://api.openweathermap.org/data/2.5/forecast/daily?q=94043&mode=json&units=metric&cnt=7");
 
@@ -87,7 +87,7 @@ public class ForecastFragment extends Fragment {
                 StringBuffer buffer = new StringBuffer();
                 if (inputStream == null) {
                     // Nothing to do.
-                    return null;
+                    forecastJsonStr = null;
                 }
                 reader = new BufferedReader(new InputStreamReader(inputStream));
 
@@ -101,14 +101,14 @@ public class ForecastFragment extends Fragment {
 
                 if (buffer.length() == 0) {
                     // Stream was empty.  No point in parsing.
-                    return null;
+                    forecastJsonStr = null;
                 }
                 forecastJsonStr = buffer.toString();
             } catch (IOException e) {
                 Log.e("ForecastFragment", "Error ", e);
-                // If the code didn't successfully get the weather data, there's no point in attemping
+                // If the code didn't successfully get the weather data, there's no point in attempting
                 // to parse it.
-                return null;
+                forecastJsonStr = null;
             } finally{
                 if (urlConnection != null) {
                     urlConnection.disconnect();
