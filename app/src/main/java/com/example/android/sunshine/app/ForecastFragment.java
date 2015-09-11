@@ -1,5 +1,6 @@
 package com.example.android.sunshine.app;
 
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -82,12 +83,12 @@ public class ForecastFragment extends Fragment {
 
         forecastList.setAdapter(mForecastAdapter);
 
-        new FetchWeatherTask().execute();
-
         return rootView;
     }
 
     public class FetchWeatherTask extends AsyncTask<Void, Void, Void>{
+
+        int mPostCode = 94043;
 
         @Override
         protected Void doInBackground(Void... params) {
@@ -104,7 +105,21 @@ public class ForecastFragment extends Fragment {
                 // Construct the URL for the OpenWeatherMap query
                 // Possible parameters are available at OWM's forecast API page, at
                 // http://openweathermap.org/API#forecast
-                URL url = new URL("http://api.openweathermap.org/data/2.5/forecast/daily?q=94043&mode=json&units=metric&cnt=7");
+                //https://www.myawesomesite.com/turtles/types?type=1&sort=relevance#section-name
+                Uri.Builder builder = new Uri.Builder();
+                builder.scheme("http")
+                        .authority("api.openweathermap.org")
+                        .appendPath("data")
+                        .appendPath("2.5")
+                        .appendPath("forecast")
+                        .appendPath("daily")
+                        .appendQueryParameter("q", mPostCode + "")
+                        .appendQueryParameter("mode", "json")
+                        .appendQueryParameter("units", "metric")
+                        .appendQueryParameter("cnt", "7");
+                String myUrl = builder.build().toString();
+
+                URL url = new URL(myUrl);
 
                 // Create the request to OpenWeatherMap, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
@@ -135,6 +150,7 @@ public class ForecastFragment extends Fragment {
                 forecastJsonStr = buffer.toString();
 
                 Log.v(LOG_TAG, "Forecast JSON String: " + forecastJsonStr);
+                Log.v(LOG_TAG, myUrl);
 
             } catch (IOException e) {
                 Log.e(LOG_TAG, "Error ", e);
