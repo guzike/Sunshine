@@ -28,6 +28,8 @@ import java.util.List;
  */
 public class ForecastFragment extends Fragment {
 
+    public static final String LOG_TAG = ForecastFragment.class.getSimpleName();
+
     private ArrayAdapter<String> mForecastAdapter;
 
     public ForecastFragment() {
@@ -51,6 +53,7 @@ public class ForecastFragment extends Fragment {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_refresh) {
+            new FetchWeatherTask().execute();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -130,8 +133,11 @@ public class ForecastFragment extends Fragment {
                     forecastJsonStr = null;
                 }
                 forecastJsonStr = buffer.toString();
+
+                Log.v(LOG_TAG, "Forecast JSON String: " + forecastJsonStr);
+
             } catch (IOException e) {
-                Log.e("ForecastFragment", "Error ", e);
+                Log.e(LOG_TAG, "Error ", e);
                 // If the code didn't successfully get the weather data, there's no point in attempting
                 // to parse it.
                 forecastJsonStr = null;
@@ -143,7 +149,7 @@ public class ForecastFragment extends Fragment {
                     try {
                         reader.close();
                     } catch (final IOException e) {
-                        Log.e("ForecastFragment", "Error closing stream", e);
+                        Log.e(LOG_TAG, "Error closing stream", e);
                     }
                 }
             }
