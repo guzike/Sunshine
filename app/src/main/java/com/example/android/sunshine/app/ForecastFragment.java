@@ -1,6 +1,7 @@
 package com.example.android.sunshine.app;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -100,6 +101,9 @@ public class ForecastFragment extends Fragment {
 
                 Toast toast = Toast.makeText(context, forecast, Toast.LENGTH_SHORT);
                 toast.show();
+
+                Intent intent = new Intent(context, DetailActivity.class);
+                startActivity(intent);
             }
         });
 
