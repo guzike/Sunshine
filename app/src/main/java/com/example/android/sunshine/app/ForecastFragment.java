@@ -124,10 +124,16 @@ public class ForecastFragment extends Fragment implements android.support.v4.app
     }
 
     @Override
-        public void onActivityCreated(Bundle savedInstanceState) {
-                getLoaderManager().initLoader(FORECAST_LOADER, null, this);
-                super.onActivityCreated(savedInstanceState);
-            }
+    public void onActivityCreated(Bundle savedInstanceState) {
+        getLoaderManager().initLoader(FORECAST_LOADER, null, this);
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    // since we read the location when we create the loader, all we need to do is restart things
+    void onLocationChanged( ) {
+            updateWeather();
+            getLoaderManager().restartLoader(FORECAST_LOADER, null, this);
+        }
 
     private void updateWeather(){
         FetchWeatherTask weatherTask = new FetchWeatherTask(getActivity());
