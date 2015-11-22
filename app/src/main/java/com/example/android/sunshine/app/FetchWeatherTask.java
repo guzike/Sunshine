@@ -342,5 +342,4 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
         // This will only happen if there was an error getting or parsing the forecast.
         return null;
     }
-
 }
